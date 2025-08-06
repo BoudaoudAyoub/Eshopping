@@ -1,0 +1,52 @@
+<header class="fixed top-0 w-full z-50 bg-[#f9f9fb] backdrop-blur shadow-sm">
+  <nav class="mx-auto py-2 sm:px-6 lg:px-8">
+    <div class="h-16 flex items-center justify-between px-[80px]">
+      <div class="flex-shrink-0 text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 text-transparent bg-clip-text">
+        Eshopping
+      </div>
+      <div class="hidden md:flex space-x-8 text-gray-700 font-medium">
+        <a routerLink="/home" class="hover:text-purple-600">Home</a>
+        <a routerLink="/orders" class="hover:text-purple-600">Orders</a>
+      </div>
+      <div class="relative">
+        <div class="flex items-center space-x-4">
+          <span class="text-gray-800 font-medium text-sm">
+            Total: ${{ totalPrice.toFixed(2) }}
+          </span>
+          <button
+            (click)="toggleCartDropdown()"
+            class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center hover:bg-purple-600 relative"
+          >
+            <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 4h13M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z"/>
+            </svg>
+            <span
+              *ngIf="totalQuantity > 0"
+              class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full"
+            >
+              {{ totalQuantity }}
+            </span>
+          </button>
+        </div>
+        <div
+          *ngIf="isDropdownOpen"
+          class="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg z-50 overflow-hidden"
+        >
+          <div *ngIf="cartItems.length > 0; else emptyCart" class="p-4 space-y-2 max-h-80 overflow-y-auto">
+            <div *ngFor="let item of cartItems" class="flex justify-between items-center text-sm">
+              <span>{{ item.product.name }} x{{ item.quantity }}</span>
+              <span class="text-gray-700 font-semibold">${{ (item.product.price * item.quantity).toFixed(2) }}</span>
+            </div>
+            <div class="border-t pt-2 mt-2 flex justify-between font-semibold">
+              <span>Total</span>
+              <span>${{ totalPrice.toFixed(2) }}</span>
+            </div>
+          </div>
+          <ng-template #emptyCart>
+            <div class="p-4 text-sm text-gray-500">Your cart is empty.</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

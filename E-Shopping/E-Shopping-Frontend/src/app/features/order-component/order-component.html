@@ -1,0 +1,54 @@
+<table class="w-full table-auto border-collapse">
+  <thead>
+    <tr class="bg-gray-100">
+      <th class="p-2 text-left">Order ID</th>
+      <th class="p-2 text-left">Client</th>
+      <th class="p-2 text-left">Date</th>
+      <th class="p-2 text-left">Status</th>
+      <th class="p-2 text-left">Total ($)</th>
+      <th class="p-2 text-left">Items</th>
+      <th class="p-2 text-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders" class="border-b">
+      <td class="p-2">{{ order.id }}</td>
+      <td class="p-2">{{ order.client }}</td>
+      <td class="p-2">{{ order.createdDate }}</td>
+
+      <td class="p-2">
+        <span
+          class="px-2 py-1 rounded text-white text-sm"
+          [ngClass]="{
+            'bg-green-500': order.status === 'Shipped',
+            'bg-red-500': order.status === 'Cancelled',
+            'bg-yellow-500': order.status === 'Pending'
+          }"
+        >
+          {{ order.status }}
+        </span>
+      </td>
+
+      <td class="p-2">{{ order.totalAmount | number: '1.2-2' }}$</td>
+      <td class="p-2">{{ order.orderItems.length }}</td>
+
+      <td class="p-2">
+          <button
+            *ngIf="order.status === 'Pending'"
+            class="text-yellow-600 hover:underline cursor-pointer"
+            (click)="cancelOrder(order.id)"
+          >
+            Cancel
+          </button>
+
+          <button
+            *ngIf="order.status === 'Pending' || order.status === 'Cancelled'"
+            class="text-red-600 hover:underline cursor-pointer"
+            (click)="deleteOrder(order.id)"
+          >
+            Delete
+          </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

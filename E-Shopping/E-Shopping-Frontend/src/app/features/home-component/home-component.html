@@ -1,0 +1,37 @@
+<div class="min-h-screen bg-[#f9f9fb] px-4 py-8 lg:px-12 flex flex-col lg:flex-row gap-6">
+  <div class="flex-1">
+    <h2 class="text-2xl font-semibold mb-4">Featured Products</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div *ngFor="let product of products" class="bg-white rounded-2xl p-6 shadow">
+        <div class="w-full h-36 bg-gray-100 flex justify-center items-center rounded-md mb-4">
+          <img [src]="'order-now.jpg'" [alt]="product.name" class="h-full h-full" />
+        </div>
+
+        <h3 class="font-semibold text-lg">{{ product.name }}</h3>
+        <p class="text-sm text-gray-500">{{ product.description }}</p>
+        <p class="text-sm text-gray-500">Stock : {{ product.stockQuantity }}</p>
+        <p class="mt-2 text-indigo-600 font-bold text-lg">${{ product.price.toFixed(2) }}</p>
+
+        <div *ngIf="isInCart(product.id)"  class="flex items-center mt-4 space-x-2">
+          <button (click)="decreaseQty(product.id)" class="bg-gray-100 px-2 py-1 rounded cursor-pointer">-</button>
+          <span class="w-8 text-center">{{ getProductQuantity(product.id) }}</span>
+          <button (click)="increaseQty(product.id)" class="bg-gray-100 px-2 py-1 rounded cursor-pointer">+</button>
+        </div>
+
+        <button
+          (click)="addToCart(product)"
+          [disabled]="isProductInCart(product.id)"
+          [ngClass]="{
+            'bg-gray-700 hover:bg-gray-600 cursor-pointer': !isProductInCart(product.id),
+            'bg-gray-300 text-gray-500 cursor-not-allowed': isProductInCart(product.id)
+          }"
+          class="mt-4 w-full text-white py-2 rounded-xl font-semibold transition"
+        >
+          {{ isProductInCart(product.id) ? 'Already in Cart' : 'Add to Cart' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <app-cart-component></app-cart-component>
+</div>
